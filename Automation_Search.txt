@@ -1,0 +1,44 @@
+===================================
+	Part 3: Automation
+===================================
+
+‘Find a Recipe’ Functionality
+
+1)
+Navigate the browser to https://www.allrecipes.com/ || Browser.open(“https://www.allrecipes.com/ “)
+
+2)
+Confirm the page is loaded || waitForPageLoad(5)
+
+3)
+Click on the 'Find a Recipe' Search Field and Input a Name and click Enter || driver.findElement(By.id("search-block")).sendKeys("Chicken Noodle Soup",K‌​eys.ENTER);
+
+4) 
+Confirm the page is loaded || waitForPageLoad(5)
+
+5)
+Verify Result Page is shown with correct Title from searching using cssSelector ||  List<WebElement> elements = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#search-results-heading[contains(.,'" + Recipe Results for Chicken Noodle Soup + "')]";
+
+6)
+Verify the search results show more than 10 results using ID ||   List<WebElement> results = driver.findElements(By.id("search-results-total-results"));   
+ß
+//Get the Total Count
+System.out.println(results.size());
+if(results.size() >= 10)
+{
+    System.out.println("10 or more results are found as Expected");
+}
+
+7) 
+Confirm the first result on the page is related to the Search Criteria by using the index Xpath and checks if true
+
+String bodyText = driver.findElement(By.xpath(//div[@role='listitem'])[1]).getText();
+Assert.assertTrue("Text found!", bodyText.contains('Chicken Noodle Soup'));
+
+
+
+
+
+
+
+
