@@ -1,0 +1,56 @@
+Sample Automation of Search Functionality using Karate (BDD) Open Source Testing language (Based in Java) Using API calls to simplify and create efficient TestCases
+
+===============================================
+		Extra Credit
+===============================================
+
+Feature: Search Functionality for Find a Recipe 
+
+Background:
+	* baseUrl 'https://www.allrecipes.com/'
+
+Scenario: Searching for Chicken Noodle Soup 
+
+	Given baseUrl 													//Calls the baseURL to land on Homepage
+	And status 200 													//Verifies the status is 200 OK and loaded
+	Then path '/search/results/?search=Chicken+Noodle+Soup'								//Add the path of the Search thus searching for Chicken Noodle Soup
+	Then method GET													//Sends the GET call to send and load the information 
+	And status 200													//Verifies the status is 200 OK and loaded
+	Then match response.[*].search-results-heading contains ['Recipe Results for Chicken Noodle Soup'] 		//Takes the response from the last call and checks the heading has the following input
+
+------------------------------------------------
+
+Feature: Log in Functionality using Email Address and Password 								// This example I am using a Scenario Outline which runs tests parallel using the different 
+															// inputs showcasing how one test can check multiple inputs  
+
+Background:
+	* baseUrl 'https://www.allrecipes.com/'
+	
+Scenario Outline: Log in using <emailAddress> and <password> to Verify Scenario 
+
+
+	Given baseUrl 'https://www.allrecipes.com/'
+	And status 200 
+	Then path '/account/signin?regSource=3907&returnURL=%2F'
+	And method GET
+	Then status 200 
+	Then url 'https://accounts.allrecipes.com/login?state=hKFo2SB0ZjUya2tiQ09DVXd1bkdvd3BhTW1oNzJYZHFRRWNFR6FupWxvZ2luo3RpZNkgSUpsYU4tcjlJUEtCaHpTUnNLQ2hFUmZQbkdNbzYxTHCjY2lk2SAzaFk2cU14bG9IRUN2eTJHUTRFaUhzd1pSY1cxTUpPNg&client=3hY6qMxloHECvy2GQ4EiHswZRcW1MJO6&protocol=oauth2&response_type=token%20id_token&redirect_uri=https%3A%2F%2Fwww.allrecipes.com%2Faccount%2Fsigninemailcallback&nonce=randomStrings&scope=openid%20email%20profile&login_hint=signin&data=&auth0Client=eyJuYW1lIjoiYXV0aDAuanMiLCJ2ZXJzaW9uIjoiOS4xMS4yIn0%3D'
+
+	And request ( Email address: '<emailAddress>' ) 
+	And request ( Password: '<password>' )
+	Then method POST
+	Then eval status == 201								//This will verify if successful login is achieved and if not it will continue the test and list results in a new file 
+
+	Examples:
+	| emailAddress             |         password        |				// This will be the data that changes every time the Scenario Outline is ran which is also from the TestCases I did in Part 1 showing different login Tests
+	| testuser@something.com   |      Reset1234!         |
+	| wrongemail.com           |      Reset1234!         |
+	| testuser@something.com   |	  WrongPassword      |
+	| wrongemail.com           |      WrongPassword      |
+
+
+
+
+
+
+
